@@ -8,6 +8,7 @@ class TrendserviceApplicationTests {
 
 	@Test
 	void contextLoads() {
+		TrendserviceApplication.main(new String[] {});
 	}
 
 }

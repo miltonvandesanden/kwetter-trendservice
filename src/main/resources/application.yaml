@@ -1,0 +1,11 @@
+server:
+  port: 8044
+  servlet:
+    contextPath: /api
+
+spring:
+  data:
+    db:
+      host: localhost
+      port: 27017
+      database: kwetter-trendDB
