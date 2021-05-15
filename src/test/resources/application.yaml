@@ -4,16 +4,11 @@ server:
     contextPath: /api
 
 spring:
-  data:
-    db:
-      host: localhost
-      port: 27017
-      database: kwetter-trendDB
   messaging:
     host: localhost
+    password: guest
     port: 5672
     username: guest
-    password: guest
     exchange: user.exchange
     queue: user.queue
     routingkey: user.routingkey
