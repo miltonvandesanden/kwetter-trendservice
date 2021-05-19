@@ -16,7 +16,7 @@ public class AddTrendService implements AddTrendDelegate
     @Override
     public Trend addTrend(Trend trend) throws IllegalArgumentException
     {
-        if (trend == null || trend.getHashtag().isBlank() || trend.getCount() != 1) {
+        if (trend == null || trend.getHashtag().isBlank() || trend.getCount() < 1) {
             throw new IllegalArgumentException();
         }
 
