@@ -10,4 +10,6 @@ public class TrendserviceApplication {
 		SpringApplication.run(TrendserviceApplication.class, args);
 	}
 
+
+
 }

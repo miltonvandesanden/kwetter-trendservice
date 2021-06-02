@@ -1,5 +1,6 @@
 package fhict.kwetter.trendservice.logic;
 
+import fhict.kwetter.trendservice.persistence.api.AddClient;
 import fhict.kwetter.trendservice.persistence.model.Trend;
 import fhict.kwetter.trendservice.persistence.repository.TrendRepository;
 import org.junit.Before;
@@ -17,12 +18,16 @@ public class AddTrendServiceTests {
     @Mock
     private TrendRepository trendRepository;
 
+    @Mock
+    private AddClient addClient;
+
     private AddTrendService addTrendService;
 
     @Before
     public void init() {
         trendRepository = mock(TrendRepository.class);
-        addTrendService = new AddTrendService(trendRepository);
+        addClient = mock(AddClient.class);
+        addTrendService = new AddTrendService(trendRepository, addClient);
     }
 
     @Test(expected = IllegalArgumentException.class)

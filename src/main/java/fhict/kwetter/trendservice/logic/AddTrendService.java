@@ -1,9 +1,13 @@
 package fhict.kwetter.trendservice.logic;
 
+import fhict.kwetter.trendservice.persistence.api.AddClient;
+import fhict.kwetter.trendservice.persistence.api.SumDto;
 import fhict.kwetter.trendservice.persistence.model.Trend;
 import fhict.kwetter.trendservice.persistence.repository.TrendRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
@@ -12,6 +16,8 @@ import java.util.Optional;
 public class AddTrendService implements AddTrendDelegate
 {
     private final TrendRepository trendRepository;
+
+    private final AddClient addClient;
 
     @Override
     public Trend addTrend(Trend trend) throws IllegalArgumentException
@@ -27,7 +33,14 @@ public class AddTrendService implements AddTrendDelegate
         } else {
             Optional<Trend> optionalTrend = trendRepository.findTrendByHashtag(trend.getHashtag());
             Trend existingTrend = optionalTrend.get();
-            existingTrend.setCount(existingTrend.getCount() + trend.getCount());
+
+            SumDto sumDto = addClient.add(existingTrend.getCount(), trend.getCount());
+
+            if(sumDto == null) {
+                existingTrend.setCount(existingTrend.getCount() + trend.getCount());
+            } else {
+                existingTrend.setCount(sumDto.getSum());
+            }
 
             result = trendRepository.save(existingTrend);
         }
