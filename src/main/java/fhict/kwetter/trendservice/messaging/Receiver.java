@@ -4,7 +4,9 @@ import fhict.kwetter.trendservice.logic.AddTrendDelegate;
 import fhict.kwetter.trendservice.mappers.TrendMapperDelegate;
 import fhict.kwetter.trendservice.messaging.dto.HashtagsDto;
 import fhict.kwetter.trendservice.persistence.model.Trend;
+import fhict.kwetter.trendservice.presentation.controller.AbstractController;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistrar;
@@ -15,6 +17,7 @@ import java.util.Optional;
 
 @Component
 @AllArgsConstructor
+@Slf4j
 public class Receiver implements RabbitListenerConfigurer
 {
     private Optional<TrendMapperDelegate> trendMapperDelegate;
@@ -28,8 +31,29 @@ public class Receiver implements RabbitListenerConfigurer
     }
 
     @RabbitListener(queues = "${spring.messaging.queue}")
-    public void receivedMessage(HashtagsDto hashtagsDto) throws Exception {
+    public void receivedMessage(HashtagsDto hashtagsDto) {
+        log.info(">> {}", "receivedMessage");
+
+        final long start = System.currentTimeMillis();
+        long duration = 0L;
+
+        try {
+            handleMessage(hashtagsDto);
+
+            duration = System.currentTimeMillis() - start;
+            log.info("<< {} [{} ms]", "receivedMessage", duration);
+        } catch (Exception exception)
+        {
+            duration = System.currentTimeMillis() - start;
+            log.warn("<< {} (FAULT) [{} ms]", "receivedMessage", duration);
+            exception.printStackTrace();
+        }
+    }
+
+    private void handleMessage(HashtagsDto hashtagsDto) throws Exception
+    {
         if(addTrendDelegate.isEmpty()) {
+
             throw new Exception("AddTrendService not implemented!");
         }
 

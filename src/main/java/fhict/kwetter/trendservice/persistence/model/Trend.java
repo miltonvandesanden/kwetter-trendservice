@@ -5,24 +5,24 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Document(collection = "Trends")
 public class Trend
 {
     @Id
-    public String id;
-
     private String hashtag;
     private int count;
 
     @Override
     public String toString() {
         return String.format(
-                "Trend[id=%s, hashtag=%s, count=%s]",
-                id, hashtag, count
+                "Trend[hashtag=%s, count=%s]",
+                hashtag, count
         );
     }
 }

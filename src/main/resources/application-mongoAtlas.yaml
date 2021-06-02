@@ -1,0 +1,5 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://kwetter:kwetter@kwetter.dkh0o.mongodb.net/TrendDB?retryWrites=true&w=majority
+      database: Trends

@@ -17,3 +17,7 @@ spring:
     exchange: user.exchange
     queue: user.queue
     routingkey: user.routingkey
+  profiles:
+    active: mongoAtlas
+
+#    mongodb+srv://kwetter:<password>@kwetter:dkh0o:mongodb:net/myFirstDatabase?retryWrites=true&w=majority:

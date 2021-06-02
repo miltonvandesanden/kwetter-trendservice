@@ -9,8 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -18,50 +17,93 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
-public class GetTrendServiceTests {
+public class GetTrendServiceTests
+{
     @Mock
     private TrendRepository trendRepository;
 
-    private GetTrendsService getTrendsService;
+    private GetTrendService getTrendService;
 
     @Before
     public void init() {
         trendRepository = mock(TrendRepository.class);
-        getTrendsService = new GetTrendsService(trendRepository);
+        getTrendService = new GetTrendService(trendRepository);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getTrendHashtagNullTest() {
+        //ARRANGE
+        String hashtag = null;
+
+        //ACT
+        getTrendService.getTrend(hashtag);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getTrendHashtagEmptyTest() {
+        //ARRANGE
+        String hashtag = "";
+
+        //ACT
+        getTrendService.getTrend(hashtag);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getTrendHashtagSpaceTest() {
+        //ARRANGE
+        String hashtag = " ";
+
+        //ACT
+        getTrendService.getTrend(hashtag);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getTrendHashtagNoHashtagTest() {
+        //ARRANGE
+        String hashtag = "Test";
+
+        //ACT
+        getTrendService.getTrend(hashtag);
     }
 
     @Test
-    public void getTrendsTest() {
+    public void getTrendTrendNotFoundTest() {
         //ARRANGE
-        List<Trend> expectedResult = new ArrayList<>();
-        expectedResult.add(
-                Trend.builder()
-                        .hashtag("#Test")
-                        .count(1)
-                        .build()
-        );
+        String hashtag = "#test";
 
-        List<Trend> actualResult;
+        when(trendRepository.findTrendByHashtag(hashtag)).thenReturn(Optional.empty());
 
-        when(trendRepository.findAll()).thenReturn(expectedResult);
+        Trend expectedResult = null;
+        Trend actualResult;
 
         //ACT
-        actualResult = getTrendsService.getTrends();
+        actualResult = getTrendService.getTrend(hashtag);
 
         //ASSERT
         assertEquals(expectedResult, actualResult);
     }
 
     @Test
-    public void getTrendsEmptyTest() {
+    public void getTrendTest() {
         //ARRANGE
-        List<Trend> expectedResult = new ArrayList<>();
-        List<Trend> actualResult;
+        String hashtag = "#test";
 
-        when(trendRepository.findAll()).thenReturn(expectedResult);
+        Trend trend = Trend.builder()
+                .hashtag(hashtag)
+                .count(1)
+                .build();
+
+        when(trendRepository.findTrendByHashtag(hashtag)).thenReturn(Optional.of(trend));
+
+        Trend expectedResult = Trend.builder()
+                .hashtag(hashtag)
+                .count(1)
+                .build();
+
+        Trend actualResult;
 
         //ACT
-        actualResult = getTrendsService.getTrends();
+        actualResult = getTrendService.getTrend(hashtag);
 
         //ASSERT
         assertEquals(expectedResult, actualResult);
