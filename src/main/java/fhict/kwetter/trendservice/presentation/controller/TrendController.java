@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+
 @Slf4j
-@RequestMapping("/trend")
 @RequiredArgsConstructor
+@CrossOrigin
+@RestController
+@RequestMapping("/trend")
 public class TrendController extends AbstractController {
     private final Optional<TrendDtoMapperDelegate> trendDtoMapperDelegate;
 

@@ -1,12 +1,12 @@
 version: "3.8"
 
 services:
-  trenddb:
-    image: mongo:latest
-    container_name: kwetter-trenddb
-    restart: always
-    ports:
-      - 27017:27017
+#  trenddb:
+#    image: mongo:latest
+#    container_name: kwetter-trenddb
+#    restart: always
+#    ports:
+#      - 27017:27017
 
   trendservice:
     image: mvandesanden/kwetter-trendservice
@@ -15,5 +15,4 @@ services:
       context: .
     ports:
       - 8044:8044
-      #- 5672:5672
     working_dir: /app

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trendservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trendservice
+  template:
+    metadata:
+      labels:
+        app: trendservice
+    spec:
+      container:
+        - name: kwetter-trendservice
+          image: eu.gcr.io/kwetter-313614/trendservice:latest
+          ports:
+            - containerPort: 8044

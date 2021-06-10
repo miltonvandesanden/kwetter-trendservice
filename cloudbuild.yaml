@@ -1,0 +1,47 @@
+steps:
+  #Unit Tests
+  - name: maven:3-jdk-11
+    entrypoint: mvn
+    args: ["test"]
+
+  # Packaging to Jar file
+  - name: maven:3-jdk-11
+    entrypoint: mvn
+    args: ["package", "-Dmaven.test.skip=true"]
+
+  # Perform code Quality checks using SonarCloud
+  - name: maven:3-jdk-11
+    entrypoint: mvn
+    args:
+      - verify
+      - org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+      - -Dmaven.test.skip=true
+      - -Dsonarlogin=8609b8f321c6cccc4fa7b22c32014271676c9dde
+
+  # Build Docker image
+  - name: gcr.io/cloud-builders/docker
+    args: ["build", "-t", "eu.gcr.io/kwetter-313614/trendservice", "--build-arg=JAR_FILE=target/trendservice-0.0.1-SNAPSHOT.jar", "."]
+
+  # Deploy docker image based on instructions in deployment.yaml
+  - name: "gcr.io/cloud-builders/gke-deploy"
+    args:
+      - run
+      - --filename=deployment.yaml
+      - --location=europe-west4
+      - --cluster=kwetter-cluster
+
+  - name: "gcr.io/cloud-builders/kubectl"
+    args:
+      - rollout
+      - restart
+      - deployment
+      - trendservice
+    env:
+      - "CLOUDSK_COMPUTE_ZONE=${_COMPUTE_ZONE}"
+      - "CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER_NAME}"
+
+substitutions:
+  _CLUSTER_NAME: kwetter-cluster
+  _COMPUTER_ZONE: europe-west4
+
+images: ["eu.gcr.io/kwetter-313614/trendservice"]
