@@ -9,14 +9,14 @@ steps:
     entrypoint: mvn
     args: ["package", "-Dmaven.test.skip=true"]
 
-  # Perform code Quality checks using SonarCloud
-  - name: maven:3-jdk-11
-    entrypoint: mvn
-    args:
-      - verify
-      - org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-      - -Dmaven.test.skip=true
-      - -Dsonar.login=8609b8f321c6cccc4fa7b22c32014271676c9dde
+#  # Perform code Quality checks using SonarCloud
+#  - name: maven:3-jdk-11
+#    entrypoint: mvn
+#    args:
+#      - verify
+#      - org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+#      - -Dmaven.test.skip=true
+#      - -Dsonar.login=8609b8f321c6cccc4fa7b22c32014271676c9dde
 
   # Build Docker image
   - name: gcr.io/cloud-builders/docker
