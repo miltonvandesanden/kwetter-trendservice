@@ -16,7 +16,7 @@ steps:
       - verify
       - org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
       - -Dmaven.test.skip=true
-      - -Dsonarlogin=8609b8f321c6cccc4fa7b22c32014271676c9dde
+      - -Dsonar.login=8609b8f321c6cccc4fa7b22c32014271676c9dde
 
   # Build Docker image
   - name: gcr.io/cloud-builders/docker
