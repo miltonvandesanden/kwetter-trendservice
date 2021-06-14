@@ -12,7 +12,7 @@ spec:
       labels:
         app: trendservice
     spec:
-      container:
+      containers:
         - name: kwetter-trendservice
           image: eu.gcr.io/kwetter-313614/trendservice:latest
           ports:
