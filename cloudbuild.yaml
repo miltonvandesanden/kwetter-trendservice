@@ -22,9 +22,9 @@ steps:
   - name: gcr.io/cloud-builders/docker
     args: ["build", "-t", "eu.gcr.io/kwetter-313614/trendservice", "--build-arg=JAR_FILE=target/trendservice-0.0.1-SNAPSHOT.jar", "."]
 
-# push docker image to gContainer Registry
+  # push docker image to gContainer Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: [ 'push', '"eu.gcr.io/kwetter-313614/trendservice" ]
+    args: [ 'push', "eu.gcr.io/kwetter-313614/trendservice" ]
 
   # Deploy docker image based on instructions in deployment.yaml
   - name: "gcr.io/cloud-builders/gke-deploy"
