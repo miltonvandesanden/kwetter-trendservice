@@ -1,7 +1,3 @@
-substitutions:
-  _CLUSTER_NAME: kwetter-cluster
-  _COMPUTER_ZONE: europe-west4
-
 steps:
   #Unit Tests
   - name: maven:3-jdk-11
@@ -45,7 +41,7 @@ steps:
       - deployment
       - trendservice
     env:
-      - "CLOUDSK_COMPUTE_ZONE=${_COMPUTE_ZONE}"
+      - "CLOUDSDK_COMPUTE_ZONE=${_COMPUTE_ZONE}"
       - "CLOUDSDK_CONTAINER_CLUSTER=${_CLUSTER_NAME}"
 
 #substitutions:
